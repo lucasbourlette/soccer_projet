@@ -29,7 +29,7 @@ class FonceurStrategy(Strategy):
     
 
      def compute_strategy(self, state, id_team, id_player):
-        if(id_team ==1):
+        if(id_team ==2):
             goal = Vector2D(0,settings.GAME_HEIGHT/2)
         else:
             goal = Vector2D(settings.GAME_WIDTH,settings.GAME_HEIGHT/2)
@@ -38,7 +38,11 @@ class FonceurStrategy(Strategy):
         return SoccerAction(state.ball.position-state.player_state(id_team,id_player).position, goal - state.ball.position)
 
 
-        
+#class DefenseurStrategy(Strategy):
+ #   def _init_(self):
+  #      Strategy._init_(self, "Defenseur")
+   #     
+    #def compute_strategy(self, state, id_team, id_player):
 
 # Create teams
          
@@ -47,10 +51,10 @@ team2 = SoccerTeam(name="Team 2")
 
 # Add players
 #team1.add("Random", RandomStrategy()) 
-team1.add("manel", FonceurStrategy()) 
-team1.add("reggey", FonceurStrategy()) 
-team2.add("ramesh", FonceurStrategy()) # Random strategy
-team2.add("zizou", FonceurStrategy())   # Static strategy
+team2.add("manel", FonceurStrategy()) 
+team2.add("reggey", FonceurStrategy()) 
+team1.add("ramesh", RandomStrategy()) # Random strategy
+team1.add("zizou", RandomStrategy())   # Static strategy
 
 # Create a match
 simu = Simulation(team1, team2)
