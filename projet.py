@@ -59,22 +59,22 @@ class AttaqueStrategy(Strategy):
     def compute_strategy(self, state, id_team, id_player):
         s = tools.MyState(state,id_team,id_player)
         attaquant = Vector2D((id_team-1)*settings.GAME_WIDTH,settings.GAME_HEIGHT/2.)
-        goal = goal = Vector2D((2-id_team)*settings.GAME_WIDTH,settings.GAME_HEIGHT/2.)
+        goal = Vector2D((2-id_team)*settings.GAME_WIDTH,settings.GAME_HEIGHT/2.)
         
         if (s.ball_position.distance(attaquant) > settings.PLAYER_RADIUS ):
-            return SoccerAction(s.ball_position-state.player_state(id_team,id_player).position)
-        else if ()
+            return SoccerAction(s.ball_position-s.my_position,  goal - s.ball_position)
+        else:
+            return SoccerAction(s.ball_position-s.my_position, goal - s.ball_position)
 # Create teams
-         
+
+        
 team1 = SoccerTeam(name="Team 1")
 team2 = SoccerTeam(name="Team 2")
 
 # Add players
 #team1.add("Random", RandomStrategy()) 
-team2.add("manel", DefenseStrategy()) 
-team2.add("reggey", FonceurStrategy()) 
-team1.add("ramesh", DefenseStrategy()) # Random strategy
-team1.add("zizou", FonceurStrategy())   # Static strategy
+team2.add("manel", DefenseStrategy())  # Random strategy
+team1.add("zizou", AttaqueStrategy())   # Static strategy
 
 # Create a match
 simu = Simulation(team1, team2)
