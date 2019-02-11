@@ -12,16 +12,9 @@ from soccersimulator import SoccerTeam
 def get_team(nb_players):
     team = SoccerTeam(name = "Lucas's Team")
     if nb_players == 1:
-        team.add("Stirker", FonceurStrategy())
+        team.add("mitroglou", FonceurStrategy())
     if nb_players == 2:
-        team.add("Stirker", FonceurStrategy())
-        team.add("Random", DefenseStrategy())
+        team.add("mitroglou", FonceurStrategy())
+        team.add("Kante", DefenseStrategy())
     return team
 
-if __name__ == '__main__':
-    from soccersimulator import Simulation, show_simu
-    
-    team1 = get_team(1)
-    team2 = get_team(2)
-    
-   
