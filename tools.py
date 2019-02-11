@@ -43,7 +43,7 @@ class MyState(object):
         return self.state.ball.position
     
     @property
-    def ball_position_future(self):
+    def ball_position_futur(self):
          return self.ball_position+ 5 * self.ball_vitesse
 
     @property
@@ -59,4 +59,17 @@ class MyState(object):
         opp = liste_opposant
         return min([(self.ball_position.distance(player),player)for player in opp])
         
+    @property
+    def goal(self):
+       return  Vector2D((2-self.id_team)*settings.GAME_WIDTH,settings.GAME_HEIGHT/2.)
+   
+    @property
+    def tire_vers_but(self):
+        return SoccerAction(self.ball_position_futur - self.my_position, self.goal-self.ball_position)
+    
+    @property
+    def cour_vers_ballon(self):
+        return SoccerAction(self.ball_position_futur - self.my_position)
+        
+    
     
