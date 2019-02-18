@@ -94,13 +94,6 @@ class MyState(object):
     def petit_tire(self):
         
         return SoccerAction(self.ball_position_futur-self.my_position,self.goal-self.ball_position.normalize*0.1)
+    def entreballetbut(self):
+        vecteurballbut=Vector2D()
     
-    @property
-    def entreBalletBut(self):
-        monbut=Vector2D((0)*settings.GAME_WIDTH,settings.GAME_HEIGHT/2.)
-        vbg=Vector2D(monbut.x,self.ball_position/1.)
-        vjg=Vector2D(monbut.y,self.my_position/1.)
-       
-        while vbg.x*vjg.y - vbg.y*vjg.x != 0: 
-            return SoccerAction(self.goal - self.ball_position)
-        return SoccerAction(None,self.tire_vers_but)

@@ -8,7 +8,7 @@ Ceci est un script temporaire.
 from soccersimulator import Strategy, SoccerAction, Vector2D, SoccerTeam, Simulation, show_simu
 
 from soccersimulator import settings
-import tools
+from . import tools
 import math
 import random
 
@@ -32,8 +32,8 @@ class DefenseStrategy(Strategy):
         s = tools.MyState(state,id_team,id_player)
         defenseur = Vector2D((id_team-1)*settings.GAME_WIDTH,settings.GAME_HEIGHT/2.)
         goal = Vector2D((2-id_team)*settings.GAME_WIDTH,settings.GAME_HEIGHT/2.)
-        if (s.ball_position.distance(defenseur)< settings.GAME_WIDTH/5.):
-            return SoccerAction(s.ball_position - s.my_position, goal - s.ball_position)
+        if (s.ball_position.distance(defenseur)< settings.GAME_WIDTH/4.):
+            return SoccerAction(s.ball_position_futur - s.my_position, goal - s.ball_position)
             return SoccerAction(defenseur - s.my_position,Vector2D())    
 class Defense2Strategy(Strategy):
     def __init__(self):
@@ -65,16 +65,16 @@ class Fonceur2Strategy(Strategy):
         return s.petit_tire
 
    
-team1 = SoccerTeam(name="Team 1")
-team2 = SoccerTeam(name="Team 2")
-
-# Add players
-#team1.add("Random", RandomStrategy()) 
-team2.add("manel", Defense2Strategy())  # Random strategy
-team1.add("zizou", FonceurStrategy())   # Static strategy
-
-# Create a match
-simu = Simulation(team1, team2)
-
-# Simulate and display the match
-show_simu(simu)
+#team1 = SoccerTeam(name="Team 1")
+#team2 = SoccerTeam(name="Team 2")
+#
+## Add players
+##team1.add("Random", RandomStrategy()) 
+#team2.add("manel", DefenseStrategy())  # Random strategy
+#team1.add("zizou", FonceurStrategy())   # Static strategy
+#
+## Create a match
+#simu = Simulation(team1, team2)
+#
+## Simulate and display the match
+#show_simu(simu)

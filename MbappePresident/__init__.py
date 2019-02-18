@@ -5,7 +5,7 @@ Created on Mon Feb 18 11:49:25 2019
 
 @author: 3672216
 """
-from projet import FonceurStrategy, DefenseStrategy
+from .projet import FonceurStrategy, DefenseStrategy
 from soccersimulator import SoccerTeam
 
 def get_team(nb_players):
