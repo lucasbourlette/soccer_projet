@@ -84,7 +84,7 @@ class MyState(object):
     
     @property
     def cour_vers_ballon(self):
-        return SoccerAction(self.ball_position_futur - self.my_position)
+        return SoccerAction(self.ball_position - self.my_position)
     
     @property
     def norme(self):
@@ -93,7 +93,11 @@ class MyState(object):
     @property
     def petit_tire(self):
         
-        return SoccerAction(self.ball_position_futur-self.my_position,self.goal-self.ball_position.normalize*0.1)
-    def entreballetbut(self):
-        vecteurballbut=Vector2D()
+        v1= self.goal-self.my_position
+        return v1.normalize()*0.6
+        
+       # return SoccerAction(self.ball_position_futur-self.my_position,self.goal-self.ball_position.normalize*0.1)
+#    def entreballetbut(self):
+#        vecteurballbut=Vector2D(((2-self.id_team)*settings.GAME_WIDTH)-self.ball_positionx,settings.GAME_HEIGHT/2.-self.ball_positiony)
+#        vecteurballjoueur=Vector2D(self.my_positionx-self.ball_positionx,self.my_positiony-self.ball_positiony)
     

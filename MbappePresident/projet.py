@@ -62,7 +62,14 @@ class Fonceur2Strategy(Strategy):
 
     def compute_strategy(self, state, id_team, id_player):
         s = tools.MyState(state,id_team,id_player)
-        return s.petit_tire
+        a1=s.cour_vers_ballon
+        a2=SoccerAction(None,s.petit_tire)
+        a3=s.tire_vers_but
+        while s.my_positionx<110:
+            if(s.my_positionx<30):
+                return a1+a3
+            return a1+a2
+        return a1+a3
 
    
 #team1 = SoccerTeam(name="Team 1")
@@ -70,8 +77,8 @@ class Fonceur2Strategy(Strategy):
 #
 ## Add players
 ##team1.add("Random", RandomStrategy()) 
-#team2.add("manel", DefenseStrategy())  # Random strategy
-#team1.add("zizou", FonceurStrategy())   # Static strategy
+#team2.add("manel", FonceurStrategy())  # Random strategy
+#team1.add("zizou", Fonceur2Strategy())   # Static strategy
 #
 ## Create a match
 #simu = Simulation(team1, team2)
