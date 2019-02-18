@@ -8,13 +8,13 @@ Created on Mon Feb  4 16:29:58 2019
 
 from projet import FonceurStrategy, DefenseStrategy
 from soccersimulator import SoccerTeam
+from mbappepresident import get_team
 
-def get_team(nb_players):
-    team = SoccerTeam(name = "Lucas's Team")
-    if nb_players == 1:
-        team.add("mitroglou", FonceurStrategy())
-    if nb_players == 2:
-        team.add("mitroglou", FonceurStrategy())
-        team.add("Kante", DefenseStrategy())
-    return team
+team1 = SoccerTeam(name="Team 1")
+team2 = SoccerTeam(name="Team 2")
+
+# Add players
+#team1.add("Random", RandomStrategy()) 
+team2.add("manel", DefenseStrategy())  # Random strategy
+team1.add("zizou", FonceurStrategy())   # Static strategy
 

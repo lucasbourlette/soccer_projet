@@ -98,9 +98,9 @@ class MyState(object):
     @property
     def entreBalletBut(self):
         monbut=Vector2D((0)*settings.GAME_WIDTH,settings.GAME_HEIGHT/2.)
-        vbg=Vector2D(monbut,self.ball_position)
-        vjg=Vector2D(monbut,self.my_position)
+        vbg=Vector2D(monbut.x,self.ball_position/1.)
+        vjg=Vector2D(monbut.y,self.my_position/1.)
        
-        while (vbg.x*vjg.y - vbg.y*vjg.x) != 0: 
+        while vbg.x*vjg.y - vbg.y*vjg.x != 0: 
             return SoccerAction(self.goal - self.ball_position)
         return SoccerAction(None,self.tire_vers_but)
