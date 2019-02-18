@@ -6,12 +6,12 @@ Created on Mon Feb  4 16:29:58 2019
 @author: 3672216
 """
 
-from mbappepresident import FonceurStrategy, DefenseStrategy
+from mbappepresident import Fonceur2Strategy, DefenseStrategy,FonceurStrategy
 from soccersimulator import Simulation, show_simu
 from mbappepresident import get_team
 
 team1 = get_team(1)
-team2 = get_team(2)
+team2 = get_team(1)
 
 # Add players
 #team1.add("Random", RandomStrategy()) 
