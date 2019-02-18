@@ -44,6 +44,38 @@ class FonceurStrategy(Strategy):
     def compute_strategy(self, state, id_team, id_player):
         s = tools.MyState(state,id_team,id_player)
         return s.tire_vers_but
+    
+class Fonceur2Strategy(Strategy):
+    def __init__(self):
+        Strategy.__init__(self, "Defense")
+
+    def compute_strategy(self, state, id_team, id_player):
+        s = tools.MyState(state,id_team,id_player)
+        return s.petit_tire
+"""class joueur_attaquant(Strategy):
+     def __init__(self):
+        Strategy.__init__(self, "Attaquant")
+        
+     def compute_strategy(self, state, id_team, id_player):
+        s= tools.MyState(state,id_team,id_player)
+        i=s.goal.x
+        if id_team==2: 
+           if  s.ball_positionx > settings.GAME_WIDTH/100*70:  
+                return SoccerAction((Vector2D(settings.GAME_WIDTH/100*65,settings.GAME_HEIGHT/2)-s.my_position),Vector2D())
+        if id_team==1:
+            if s.ball_positionx < settings.GAME_WIDTH/100*30:
+                return SoccerAction((Vector2D(settings.GAME_WIDTH/100*35,settings.GAME_HEIGHT/2)-s.my_position),Vector2D())
+        if s.norme>settings.SHORT_RANGE:
+           return SoccerAction((s.ball_position + s.ball_vitesse*10-s.my_position).normalize()*settings.maxPlayerAcceleration,Vector2D())
+        if s.norme>settings.BALL_RADIUS:
+            return SoccerAction((s.ball_position-s.my_position),Vector2D())
+        if (s.my_position.x<settings.GAME_WIDTH/2 and s.id_team==1)or(s.my_position.x>settings.GAME_WIDTH/2 and s.id_team==2):
+           if s.eproche<settings.SHORT_RANGE:
+                return SoccerAction((s.ball-s.player),(s.fproche).normalize()*2)
+           return SoccerAction((s.ball-s.player),(Vector2D(i,settings.GAME_HEIGHT/2)-s.player).normalize()*2)
+        else:
+           return SoccerAction((s.ball-s.player),Vector2D(i,settings.GAME_HEIGHT/2)-s.player)"""
+    
        
         
 """class AttStrate(Strategy):
@@ -63,7 +95,7 @@ team2.add("manel", DefenseStrategy())  # Random strategy
 team1.add("zizou", FonceurStrategy())   # Static strategy
 
 # Create a match
-"""simu = Simulation(team1, team2)
+simu = Simulation(team1, team2)
 
 # Simulate and display the match
-show_simu(simu)"""
+show_simu(simu)
