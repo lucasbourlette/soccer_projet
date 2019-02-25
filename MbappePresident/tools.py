@@ -42,6 +42,8 @@ class MyState(object):
     @property
     def my_positionx(self):
       return self.state.player_state(self.id_team,self.id_player).position.x
+  
+    @property
     def my_positiony(self):
       return self.state.player_state(self.id_team,self.id_player).position.y
 
@@ -80,7 +82,7 @@ class MyState(object):
    
     @property
     def tire_vers_but(self):
-        return SoccerAction(self.ball_position_futur - self.my_position, self.goal-self.ball_position)
+        return SoccerAction(self.ball_position_futur - self.my_position, self.goal - self.ball_position_futur)
     
     @property
     def cour_vers_ballon(self):
@@ -94,10 +96,40 @@ class MyState(object):
     def petit_tire(self):
         
         v1= self.goal-self.my_position
-        return v1.normalize()*0.6
-        
-       # return SoccerAction(self.ball_position_futur-self.my_position,self.goal-self.ball_position.normalize*0.1)
-#    def entreballetbut(self):
-#        vecteurballbut=Vector2D(((2-self.id_team)*settings.GAME_WIDTH)-self.ball_positionx,settings.GAME_HEIGHT/2.-self.ball_positiony)
-#        vecteurballjoueur=Vector2D(self.my_positionx-self.ball_positionx,self.my_positiony-self.ball_positiony)
+        return v1.normalize()*0.6        
+        return SoccerAction(self.ball_position_futur-self.my_position,self.goal-self.ball_position.normalize*0.1)
     
+    @property
+    def passe(self):
+        return SoccerAction(acceleration = Vector2D(), shoot = (self.plus_proche_ami()-self.player))
+    @property
+    def entreballetbut(self):
+        vecteurballbut=Vector2D(((2-self.id_team)*settings.GAME_WIDTH)-self.ball_positionx,settings.GAME_HEIGHT/2.-self.ball_positiony)
+        vecteurballjoueur=Vector2D(self.my_positionx-self.ball_positionx,self.my_positiony-self.ball_positiony)
+        return SoccerAction(vecteurballbut - vecteurballjoueur)
+    
+    @property
+    def ball_strategy(self):
+        if self.id_team_adv() == 2:
+            if (self.ball.x>(3*settings.GAME_WIDTH)/4):
+                return 0                                                           #Attaque
+            else:
+                return 1                                                           #Defense
+        if (self.id_team_adv() == 1):
+            if (self.ball.x<(settings.GAME_WIDTH)/4):
+                return 0                                                           #Attaque
+            else:
+                return 1 
+    
+    @property
+    def peut_shooter(self):
+        return self.ball.distance(self.player) < settings.PLAYER_RADIUS + settings.BALL_RADIUS
+    
+    @property    
+    def shoot_ou_cour(self):
+        if (self.peut_shooter):
+            return self.tire_vers_but
+        else:
+            return self.cour_vers_ballon 
+
+        return move.to_ball() + shoot.to_goal (self.strength)
