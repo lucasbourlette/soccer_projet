@@ -27,18 +27,40 @@ class MyState(object):
     def liste_opposant(self):
         return [self.state.player_state(id_team, id_player).position for (id_team, id_player) in self.state.players if id_team != self.id_team]
     
+    
+    @property
+    def liste_equipier(self):
+        return [self.state.player_state(id_team, id_player).position for (id_team, id_player) in self.state.players if id_team == self.id_team]
+    
     @property
     def opposant_le_plus_proche(self):
-        opp=self.liste_opposant()
-        return min([(self.player.distance(player),player)for player in opp])
+        opp=self.liste_opposant
+        return min([(self.player.distance(player),player) for player in opp])
     
-    
+    @property
+    def equipier_le_plus_proche(self):
+        equipier=self.liste_equipier
+        return min([(self.player.distance(player),player) for player in equipier])
 #====================================================================================================================================
 #        Position
     @property
     def my_position(self):
       return self.state.player_state(self.id_team,self.id_player).position
-      
+    
+    @property
+    def id_team_adv(self):
+        id_team = 2
+        if (self.id_team == 1):
+            return id_team
+        else:
+            id_team = 1
+            return id_team
+        
+    @property    
+    def position_adv(self):
+        m = self.id_team_adv
+        if (m != self.id_team):
+            return self.state.player_state(m, self.id_player).position
     @property
     def my_positionx(self):
       return self.state.player_state(self.id_team,self.id_player).position.x
@@ -60,6 +82,10 @@ class MyState(object):
     @property
     def ball_position_futur(self):
          return self.ball_position+ 5 * self.ball_vitesse
+     
+    @property
+    def adv_position_futur(self):
+         return self.position_adv + 5 * settings.maxPlayerSpeed
 
     @property
     def distance_balle (self): 
@@ -78,7 +104,9 @@ class MyState(object):
     def goal(self):
        return  Vector2D((2-self.id_team)*settings.GAME_WIDTH,settings.GAME_HEIGHT/2.)
    
-
+    @property
+    def my_goal(self):
+       return  Vector2D((self.id_team)*settings.GAME_WIDTH,settings.GAME_HEIGHT/2.)
    
     @property
     def tire_vers_but(self):
@@ -97,11 +125,9 @@ class MyState(object):
         
         v1= self.goal-self.my_position
         return v1.normalize()*0.6        
-        return SoccerAction(self.ball_position_futur-self.my_position,self.goal-self.ball_position.normalize*0.1)
+        return SoccerAction(self.ball_position_futur-self.my_position,self.goal-self.ball_position.normalize*0.15)
     
-    @property
-    def passe(self):
-        return SoccerAction(acceleration = Vector2D(), shoot = (self.plus_proche_ami()-self.player))
+   
     @property
     def entreballetbut(self):
         vecteurballbut=Vector2D(((2-self.id_team)*settings.GAME_WIDTH)-self.ball_positionx,settings.GAME_HEIGHT/2.-self.ball_positiony)
@@ -119,17 +145,13 @@ class MyState(object):
             if (self.ball.x<(settings.GAME_WIDTH)/4):
                 return 0                                                           #Attaque
             else:
-                return 1 
+                return 1
+            
+    @property       
+    def passe(self):
+        equipier = self.equipier_le_plus_proche
+        return SoccerAction(self.ball_position - self.my_position, equipier - self.ball_position)
     
-    @property
-    def peut_shooter(self):
-        return self.ball.distance(self.player) < settings.PLAYER_RADIUS + settings.BALL_RADIUS
-    
-    @property    
-    def shoot_ou_cour(self):
-        if (self.peut_shooter):
-            return self.tire_vers_but
-        else:
-            return self.cour_vers_ballon 
-
-        return move.to_ball() + shoot.to_goal (self.strength)
+    def deplaceVers(self, pointx, pointy):
+        dep = Vector2D(pointx, pointy)
+        return SoccerAction(dep - self.my_position)

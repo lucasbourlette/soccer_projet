@@ -33,7 +33,9 @@ class DefenseStrategy(Strategy):
         goal = Vector2D((2-id_team)*settings.GAME_WIDTH,settings.GAME_HEIGHT/2.)
         if (s.ball_position.distance(defenseur)< settings.GAME_WIDTH/4.):
             return SoccerAction(s.ball_position_futur - s.my_position, goal - s.ball_position)
-            return SoccerAction(defenseur - s.my_position,Vector2D())    
+            return SoccerAction(defenseur - s.my_position,Vector2D())   
+        
+        
 class Defense2Strategy(Strategy):
     def __init__(self):
         Strategy.__init__(self, "Defense")
@@ -41,12 +43,17 @@ class Defense2Strategy(Strategy):
     def compute_strategy(self, state, id_team, id_player):
         s = tools.MyState(state,id_team,id_player)
         defenseur = Vector2D((id_team-1)*settings.GAME_WIDTH,settings.GAME_HEIGHT/2.)
-        goal = Vector2D((2-id_team)*settings.GAME_WIDTH,settings.GAME_HEIGHT/2.)
+        courir_vers_adv = SoccerAction(s.ball_position_futur - s.my_position)
+        s.deplaceVers(settings.GAME_WIDTH - 10, settings.GAME_HEIGHT/2.)
         
-        if (s.ball_position.distance(defenseur)< settings.GAME_WIDTH/2.):
-            return SoccerAction(s.ball_position_futur - s.my_position, goal  -  s.ball_position)    
-
-            
+        if (s.ball_position.distance(defenseur)< settings.GAME_WIDTH/2):
+            return s.tire_vers_but + courir_vers_adv    
+        if (s.position_adv.distance(defenseur) > settings.GAME_WIDTH/2.):
+            if (s.id_team == 1):
+                return  s.deplaceVers(10, settings.GAME_HEIGHT/2.)
+            if (s.id_team == 2):
+                return  s.deplaceVers(settings.GAME_WIDTH - 10, settings.GAME_HEIGHT/2.)
+        
 class FonceurStrategy(Strategy):
     def __init__(self):
         Strategy.__init__(self, "Defense")
@@ -69,4 +76,12 @@ class Fonceur2Strategy(Strategy):
                 return a1+a3
             return a1+a2
         return a1+a3
+    
+#class AttaqueStrategy(Strategy):
+#    def __init__(self):
+#        Strategy.__init__(self, "Attaque")
+#
+#    def compute_strategy(self, state, id_team, id_player):
+#         s = tools.MyState(state,id_team,id_player)
+#         return s.passe
 
