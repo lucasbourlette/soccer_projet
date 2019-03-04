@@ -7,7 +7,7 @@ Ceci est un script temporaire.
 from soccersimulator import Strategy, SoccerAction, Vector2D, SoccerTeam, Simulation, show_simu
 
 from soccersimulator import settings
-import tools
+from . import tools
 import math
 import random
 
@@ -70,18 +70,3 @@ class Fonceur2Strategy(Strategy):
             return a1+a2
         return a1+a3
 
-   
-team1 = SoccerTeam(name="Team 1")
-team2 = SoccerTeam(name="Team 2")
-
-# Add players
-#team1.add("Random", RandomStrategy()) 
-team1.add("Manel", Defense2Strategy())
-team1.add("Tokyo", Fonceur2Strategy())
-team2.add("zizou", Defense2Strategy()) 
-
-# Create a match
-simu = Simulation(team1, team2)
-
-# Simulate and display the match
-show_simu(simu)
