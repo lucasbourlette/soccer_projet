@@ -5,7 +5,7 @@ Created on Mon Feb 18 11:49:25 2019
 
 @author: 3672216
 """
-from mbappepresident.projet import FonceurStrategy, DefenseStrategy,Fonceur2Strategy
+from mbappepresident.projet import FonceurStrategy, DefenseStrategy,Fonceur2Strategy, Attaquant
 from soccersimulator import SoccerTeam
 
 def get_team(nb_players):
@@ -13,6 +13,6 @@ def get_team(nb_players):
     if nb_players == 1:
         team.add("mitroglou", Fonceur2Strategy())
     if nb_players == 2:
-        team.add("mitroglou", Fonceur2Strategy())
+        team.add("mitroglou", Attaquant())
         team.add("Kante", DefenseStrategy())
     return team
