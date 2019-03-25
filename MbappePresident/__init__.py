@@ -15,7 +15,7 @@ def get_team(nb_players):
     if nb_players == 2:
         team.add("mitroglou", Attaquant())
         team.add("Kante", DefenseStrategy())
-            if nb_players == 2:
+    if nb_players == 4:
         team.add("mitroglou", Attaquant())
         team.add("giroud", Attaquant())
         team.add("cavani", Attaquant())
