@@ -44,19 +44,24 @@ class Defense2Strategy(Strategy):
         s = tools.MyState(state,id_team,id_player)
         defenseur = Vector2D((id_team-1)*settings.GAME_WIDTH,settings.GAME_HEIGHT/2.)
         courir_vers_adv = SoccerAction(s.ball_position_futur - s.my_position)
-        s.deplaceVers(settings.GAME_WIDTH - 10, settings.GAME_HEIGHT/2.)
+        #s.deplaceVers(settings.GAME_WIDTH - 10, settings.GAME_HEIGHT/2.)
         
         if (s.ball_position.distance(defenseur)< settings.GAME_WIDTH/2):
             return s.tire_vers_but + courir_vers_adv    
         if (s.position_adv.distance(defenseur) > settings.GAME_WIDTH/2.):
             if (s.id_team == 1):
-                return  s.deplaceVers(10, settings.GAME_HEIGHT/2.)
+                return  s.deplaceVers(30, settings.GAME_HEIGHT/2.)
             if (s.id_team == 2):
-                return  s.deplaceVers(settings.GAME_WIDTH - 10, settings.GAME_HEIGHT/2.)
+                return  s.deplaceVers(settings.GAME_WIDTH - 30, settings.GAME_HEIGHT/2.)
+        
+        if (s.position_adv.distance(defenseur) < settings.GAME_WIDTH/3.):
+            return  s.tire_vers_corner
+            return s.deplaceVers(30, settings.GAME_HEIGHT/2.)
+              
         
 class FonceurStrategy(Strategy):
     def __init__(self):
-        Strategy.__init__(self, "Defense")
+        Strategy.__init__(self, "Fonceur")
 
     def compute_strategy(self, state, id_team, id_player):
         s = tools.MyState(state,id_team,id_player)
@@ -64,19 +69,32 @@ class FonceurStrategy(Strategy):
     
 class Fonceur2Strategy(Strategy):
     def __init__(self):
-        Strategy.__init__(self, "Defense")
+        Strategy.__init__(self, "Fonceur")
 
     def compute_strategy(self, state, id_team, id_player):
         s = tools.MyState(state,id_team,id_player)
         a1=s.cour_vers_ballon
         a2=SoccerAction(None,s.petit_tire)
         a3=s.tire_vers_but
+        
         while s.my_positionx<110:
-            if(s.my_positionx<30):
+            if(s.my_positionx<10):
                 return a1+a3
             return a1+a2
         return a1+a3
     
+    
+class Attaquant(Strategy):
+    def __init__(self):
+        Strategy.__init__(self, "Attaquant")
+
+    def compute_strategy(self, state, id_team, id_player):
+        s = tools.MyState(state,id_team,id_player)
+        if s.teamatt[2] : 
+            return SoccerAction(Vector2D(settings.GAME_WIDTH*(s.teamdef[0]), (s.ball_position_futur.y + s.goal.y)/2 )-s.my_position, s.goal - s.my_position)
+        else :
+            return s.stratatt
+        
 #class AttaqueStrategy(Strategy):
 #    def __init__(self):
 #        Strategy.__init__(self, "Attaque")
