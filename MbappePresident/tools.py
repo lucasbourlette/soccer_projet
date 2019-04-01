@@ -133,30 +133,6 @@ class MyState(object):
        return  Vector2D(0,0)
    
    
-    @property
-    def tire_vers_but(self):
-        return SoccerAction(self.ball_position_futur - self.my_position, self.goal - self.ball_position_futur)
-    
-    @property
-    def tire_vers_corner(self):
-       
-        return SoccerAction(self.ball_position_futur - self.my_position, self.corner - self.ball_position_futur)
-    
-    @property
-    def cour_vers_ballon(self):
-        return SoccerAction(self.ball_position - self.my_position)
-    
-    @property
-    def norme(self):
-        return math.sqrt((self.ball_positionx-self.my_positionx)**2+(self.ball_positiony-self.my_positiony)**2)
-    
-    @property
-    def petit_tire(self):
-        
-        v1= self.goal-self.my_position
-        return v1.normalize()*0.6        
-        return SoccerAction(self.ball_position_futur-self.my_position,self.goal-self.ball_position.normalize*0.15)
-
     @property 
     def coequipier(self):   
         for (id_team, id_player) in self.state.players :
@@ -169,25 +145,17 @@ class MyState(object):
         return SoccerAction(vecteurballbut - vecteurballjoueur)
     
             
-    @property       
-    def passe(self):
-        equipier = self.equipier_le_plus_proche
-        return SoccerAction(self.ball_position - self.my_position, equipier - self.ball_position)
-    
-    def deplaceVers(self, pointx, pointy):
-        dep = Vector2D(pointx, pointy)
-        return SoccerAction(dep - self.my_position)
-    
+
     @property
-    def teamatt(self):
+    def att(self):
         if self.id_team == 1 :
-            (posattx,nextpos,defe) = (self.my_positionx < settings.GAME_WIDTH*(1/2), settings.GAME_WIDTH*(3/5),self.ball_position_futur.x < settings.GAME_WIDTH*(1/4))
+            (posattx,nextpos,defe) = (self.my_positionx < settings.GAME_WIDTH*(1/2), settings.GAME_WIDTH*(3/5), self.ball_position_futur.x < settings.GAME_WIDTH*(1/4))
         else : 
-            (posattx,nextpos,defe) = (self.my_positionx > settings.GAME_WIDTH*(1/2), settings.GAME_WIDTH*(2/5),self.ball_position_futur.x > settings.GAME_WIDTH*(3/4))
+            (posattx,nextpos,defe) = (self.my_positionx > settings.GAME_WIDTH*(1/2), settings.GAME_WIDTH*(2/5), self.ball_position_futur.x > settings.GAME_WIDTH*(3/4))
         return (posattx,nextpos,defe)
     
     @property
-    def teamdef(self):
+    def defe(self):
         if self.id_team == 1 :
             (posdef,condition) = (1/4, self.ball_position_futur.x > settings.GAME_WIDTH*(1/3))
         else : 
@@ -196,15 +164,15 @@ class MyState(object):
     
     @property
     def stratatt(self):
-        if self.teamatt[0] :
+        if self.att[0] :
             if self.my_positiony < settings.GAME_HEIGHT/2 :
                 if self.my_position.distance(self.ball_position)<settings.PLAYER_RADIUS + settings.BALL_RADIUS :
-                    return SoccerAction(shoot=Vector2D(self.teamatt[1], 0)-self.my_position)
+                    return SoccerAction(shoot=Vector2D(self.att[1], 0)-self.my_position)
                 else :
-                    return SoccerAction(acceleration=self.ball_position_futur-self.my_position)
+                    return SoccerAction(acceleration=self.ball_position_futur-self.my_position) 
             else : 
                 if self.my_position.distance(self.ball_position)<settings.PLAYER_RADIUS + settings.BALL_RADIUS :
-                    return SoccerAction(shoot=Vector2D(self.teamatt[1], settings.GAME_HEIGHT)-self.my_position)
+                    return SoccerAction(shoot=Vector2D(self.att[1], settings.GAME_HEIGHT)-self.my_position)
                 else :
                     return SoccerAction(acceleration=self.ball_position_futur-self.my_position)
         else : 
