@@ -14,10 +14,10 @@ def get_team(nb_players):
         team.add("mitroglou", Fonceur2Strategy())
     if nb_players == 2:
         team.add("mitroglou", Attaquant())
-        team.add("Kante", DefenseStrategy())
+        team.add("Kante", Defense2Strategy())
     if nb_players == 4:
         team.add("mitroglou", Attaquant())
         team.add("giroud", Attaquant())
         team.add("cavani", Attaquant())
-        team.add("Kante", DefenseStrategy())
+        team.add("Kante", Defense2Strategy())
     return team
