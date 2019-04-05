@@ -23,24 +23,34 @@ class MyState(object):
     def ball_vitesse(self):
         return self.state.ball.vitesse
     
-    @property
-    def liste_opposant(self):
-        return [self.state.player_state(id_team, id_player).position for (id_team, id_player) in self.state.players if id_team != self.id_team]
+   
     
     
     @property
     def liste_equipier(self):
         return [self.state.player_state(id_team, id_player).position for (id_team, id_player) in self.state.players if id_team == self.id_team]
     
+  
     @property
-    def opposant_le_plus_proche(self):
-        opp=self.liste_opposant
-        return min([(self.player.distance(player),player) for player in opp])[1]
+    #retourne la liste des opposants
+    def listeop(self):
+        return [self.state.player_state(id_team, id_player).position for (id_team , id_player) in self.state.players if id_team != self.id_team]
     
+    @property
+    #retourne l'opposant le plus proche
+    def oppleplusproche(self):
+        opponent = self.listeop
+        return min([(self.my_position.distance(player), player) for player in opponent])[1]
     @property
     def equipier_le_plus_proche(self):
         equipier=self.liste_equipier
-        return min([(self.player.distance(player),player) for player in equipier])
+        return min([(self.my_position.distance(player), player) for player in equipier])[1]
+    
+    @property
+    def coequipier(self):   
+        for (id_team, id_player) in self.state.players :
+            if (id_team == self.id_team) and (id_player != self.id_player): 
+                return self.state.player_state(id_team, id_player).position
 #====================================================================================================================================
 #        Position
     @property
@@ -149,10 +159,10 @@ class MyState(object):
     @property
     def att(self):
         if self.id_team == 1 :
-            (posattx,nextpos,defe) = (self.my_positionx < settings.GAME_WIDTH*(1/2), settings.GAME_WIDTH*(3/5), self.ball_position_futur.x < settings.GAME_WIDTH*(1/4))
+            (posattx,nextpos) = (self.my_positionx < settings.GAME_WIDTH*(1/2), settings.GAME_WIDTH*(3/5))
         else : 
-            (posattx,nextpos,defe) = (self.my_positionx > settings.GAME_WIDTH*(1/2), settings.GAME_WIDTH*(2/5), self.ball_position_futur.x > settings.GAME_WIDTH*(3/4))
-        return (posattx,nextpos,defe)
+            (posattx,nextpos) = (self.my_positionx > settings.GAME_WIDTH*(1/2), settings.GAME_WIDTH*(2/5))
+        return (posattx,nextpos)
     
     @property
     def defe(self):

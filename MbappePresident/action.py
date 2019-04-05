@@ -33,24 +33,26 @@ class Shoot(object):
     def __init__(self,MyState):
         self.MyState = MyState
         
-        
+       
     @property
     def tire_vers_but(self):
         return SoccerAction(self.MyState.ball_position_futur - self.MyState.my_position, self.MyState.goal - self.MyState.ball_position_futur)
     
-    @property
-    def tire_vers_corner(self):
-       
-        return SoccerAction(self.MyState.ball_position_futur - self.MyState.my_position, self.MyState.corner - self.MyState.ball_position_futur)
+    def tire_vers(self,position,puissance):
+        v1=position - self.MyState.ball_position_futur
+        v2=v1.normalize()*puissance
+        return SoccerAction(self.MyState.ball_position_futur - self.MyState.my_position, v2)
+   
     
-    @property
-    def petit_tire(self):
+    def petit_tire(self,pos):
         
-        v1= self.MyState.goal-self.MyState.my_position
-        return v1.normalize()*1      
+        v1= pos-self.MyState.my_position
+        return v1.normalize()*1.5     
         
+
     
-    def passe(self, puissance, position):
-        return SoccerAction(self.MyState.ball_position.normalize*puissance - position)
-        equipier = self.MyState.equipier_le_plus_proche
-        return SoccerAction(self.MyState.my_position - self.MyState.ball_position, equipier - self.MyState.ball_position)
+        
+        
+#    def passe_att_att(self, puissance, position):
+#        
+#        
