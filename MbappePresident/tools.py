@@ -43,7 +43,7 @@ class MyState(object):
         return min([(self.my_position.distance(player), player) for player in opponent])[1]
     @property
     def equipier_le_plus_proche(self):
-        equipier=self.liste_equipier
+        equipier=self.listeop
         return min([(self.my_position.distance(player), player) for player in equipier])[1]
     
     @property
@@ -52,6 +52,11 @@ class MyState(object):
             if (id_team == self.id_team) and (id_player != self.id_player): 
                 return self.state.player_state(id_team, id_player).position
             
+    @property
+    def adversaire(self):   
+        for (id_team, id_player) in self.state.players :
+            if (id_team != self.id_team) and (id_player != self.id_player): 
+                return self.state.player_state(id_team, id_player).position
 #====================================================================================================================================
 #        Position
     @property

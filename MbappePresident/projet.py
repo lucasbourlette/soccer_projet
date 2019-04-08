@@ -132,12 +132,12 @@ class ailierh(Strategy):
         s = tools.MyState(state,id_team,id_player)
         m = action.Move(s)
         t = action.Shoot(s)
-        if s.ball_positiony<70 :
+        if s.ball_positiony<65 :
             return m.deplaceVers(s.ball_positionx, 70)
         if s.ball_positiony>=70 :
             if s.my_position.distance(s.oppleplusproche)<25:
-                return t.tire_vers(s.coequipier,3.5)
-            elif s.my_positionx < settings.GAME_WIDTH - 35:
+                return t.tire_vers(s.equipier_le_plus_proche,3.5)
+            elif s.my_positionx > settings.GAME_WIDTH - 15:
                 return t.tire_vers_but
             else:
                 if (s.id_team == 1):
@@ -163,13 +163,14 @@ class ailierb(Strategy):
         s = tools.MyState(state,id_team,id_player)
         m = action.Move(s)
         t = action.Shoot(s)
-        if s.ball_positiony>20 and s.ball_positionx<110 :
+        if s.ball_positiony>30 and s.ball_positionx<110 :
             return m.deplaceVers(s.ball_positionx+30, 20)
         if s.ball_positiony<=20 :
             if s.my_position.distance(s.oppleplusproche)<20:
-                return t.tire_vers(s.coequipier,3.5)
-            elif s.my_positionx < settings.GAME_WIDTH - 35:
-                return t.tire_vers_but
+                return t.tire_vers(s.equipier_le_plus_proche,3.5)
+            elif s.my_positionx > settings.GAME_WIDTH - 15:
+                return t.tire_vers(s.equipier_le_plus_proche, 4)
+            
             else:
                 if (s.id_team == 1):
                     p=Vector2D(120,20)
@@ -195,14 +196,14 @@ class Attaquant4v4(Strategy):
         else :
             if (s.id_team == 1):
                 if s.my_position.distance(s.oppleplusproche)<15:
-                    return t.tire_vers_but
+                    return t.tire_vers(s.equipier_le_plus_proche, 3.5)
                 elif s.ball_positionx<110 :
                     p=Vector2D(110,45)
                     return m.cour_vers_ballon +SoccerAction(None,t.petit_tire(p))
-                elif s.my_position.distance(s.position_adv) < 20:
-                    #return t.tire_vers(s.coequipier,3)
-                    v =Vector2D(s.my_positionx+30,20)
-                    return t.tire_vers(v,3)
+                elif s.my_positionx > settings.GAME_WIDTH - 30:
+                    return t.tire_vers(s.equipier_le_plus_proche,3)
+#                    v =Vector2D(s.my_positionx+30,20)
+#                    return t.tire_vers(v,3)
                 else :
                     return t.tire_vers_but
             if (s.id_team == 2):
@@ -244,4 +245,3 @@ class Attaquant(Strategy):
 #    def compute_strategy(self, state, id_team, id_player):
 #         s = tools.MyState(state,id_team,id_player)
 #         return s.passe
-
