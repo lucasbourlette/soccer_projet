@@ -43,7 +43,7 @@ class MyState(object):
         return min([(self.my_position.distance(player), player) for player in opponent])[1]
     @property
     def equipier_le_plus_proche(self):
-        equipier=self.listeop
+        equipier=self.liste_equipier
         return min([(self.my_position.distance(player), player) for player in equipier])[1]
     
     @property
@@ -52,11 +52,6 @@ class MyState(object):
             if (id_team == self.id_team) and (id_player != self.id_player): 
                 return self.state.player_state(id_team, id_player).position
             
-    @property
-    def adversaire(self):   
-        for (id_team, id_player) in self.state.players :
-            if (id_team != self.id_team) and (id_player != self.id_player): 
-                return self.state.player_state(id_team, id_player).position
 #====================================================================================================================================
 #        Position
     @property
@@ -179,18 +174,35 @@ class MyState(object):
         return (posdef,condition)
     
     @property
+    def posaillier1(self):   
+        for (id_team, id_player) in self.state.players :
+            if (id_team == self.id_team) and (id_player != self.id_player) and (id_player == 1):
+                return self.state.player_state(id_team, id_player).position
+            
+    @property
+    def posaillier2(self):   
+        for (id_team, id_player) in self.state.players :
+            if (id_team == self.id_team) and (id_player != self.id_player) and (id_player == 2):
+                return self.state.player_state(id_team, id_player).position
+    
+    @property
+    def posattaquant(self):   
+        for (id_team, id_player) in self.state.players :
+            if (id_team == self.id_team) and (id_player != self.id_player) and (id_player == 0): 
+                return self.state.player_state(id_team, id_player).position 
+    @property
     def stratatt(self):
         if self.att[0] :
-            if self.my_positiony < settings.GAME_HEIGHT/2 :
+            #if self.my_positiony < settings.GAME_HEIGHT/2 :
                 if self.my_position.distance(self.ball_position)<settings.PLAYER_RADIUS + settings.BALL_RADIUS :
                     return SoccerAction(shoot=Vector2D(self.att[1], 0)-self.my_position)
                 else :
                     return SoccerAction(acceleration=self.ball_position_futur-self.my_position) 
-            else : 
-                if self.my_position.distance(self.ball_position)<settings.PLAYER_RADIUS + settings.BALL_RADIUS :
-                    return SoccerAction(shoot=Vector2D(self.att[1], settings.GAME_HEIGHT)-self.my_position)
-                else :
-                    return SoccerAction(acceleration=self.ball_position_futur-self.my_position)
+            #else : 
+               # if self.my_position.distance(self.ball_position)<settings.PLAYER_RADIUS + settings.BALL_RADIUS :
+                   # return SoccerAction(shoot=Vector2D(self.att[1], settings.GAME_HEIGHT)-self.my_position)
+               # else :
+                   # return SoccerAction(acceleration=self.ball_position_futur-self.my_position)
         else : 
             if self.my_position.distance(self.ball_position)<settings.PLAYER_RADIUS + settings.BALL_RADIUS :
                 return SoccerAction(shoot=self.goal-self.my_position)

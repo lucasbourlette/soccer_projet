@@ -46,7 +46,7 @@ class Defense2Strategy(Strategy):
         t = action.Shoot(s)
         defenseur = Vector2D((id_team-1)*settings.GAME_WIDTH,settings.GAME_HEIGHT/2.)
         
-        #s.deplaceVers(settings.GAME_WIDTH - 10, settings.GAME_HEIGHT/2.)
+        #s.deplaceVers(settings.GAME_WIDTH - 10, settings. m = action.Move(s)GAME_HEIGHT/2.)
         
         
         
@@ -54,27 +54,17 @@ class Defense2Strategy(Strategy):
         if (s.ball_position.distance(defenseur)< settings.GAME_WIDTH/3.):
             if (s.my_positiony>=45):
                 if (s.id_team == 1):
-                    p=Vector2D(s.my_positionx,s.my_positiony,135)
-                    return t.tire_vers(s.coequipier,4) + m.cour_vers_ballon
+                    return t.tire_vers(s.posaillier1,4) + m.cour_vers_ballon
                 if (s.id_team == 2):
                     p=Vector2D(s.my_positionx,s.my_positiony,45)
                     return t.tire_vers(p,6) + m.cour_vers_ballon
             if (s.my_positiony<45):
                 if (s.id_team == 1):
-                    p=Vector2D(s.my_positionx,s.my_positiony,225)
-                    return t.tire_vers(s.coequipier,4) + m.cour_vers_ballon
+                    return t.tire_vers(s.posaillier2,4) + m.cour_vers_ballon
                 if (s.id_team == 2):
                     p=Vector2D(s.my_positionx,s.my_positiony,45)
                     return t.tire_vers(p,6) + m.cour_vers_ballon   
-        
-        
-        
-        
-        
-        # a regarder 
-        
-        
-        if (s.position_adv.distance(defenseur) > settings.GAME_WIDTH/2.):
+        if (s.oppleplusproche.distance(defenseur) > settings.GAME_WIDTH/2.):
             if (s.id_team == 1):
                 return  m.deplaceVers(30, settings.GAME_HEIGHT/2.)
             if (s.id_team == 2):
@@ -135,9 +125,18 @@ class ailierh(Strategy):
         if s.ball_positiony<65 :
             return m.deplaceVers(s.ball_positionx, 70)
         if s.ball_positiony>=70 :
-            if s.my_position.distance(s.oppleplusproche)<25:
-                return t.tire_vers(s.equipier_le_plus_proche,3.5)
-            elif s.my_positionx > settings.GAME_WIDTH - 15:
+            if s.my_position.distance(s.oppleplusproche)< 10:
+                if s.posattaquant.distance(s.oppleplusproche)<s.my_position.distance(s.oppleplusproche):
+                    if (s.id_team == 1):
+                        p=Vector2D(120,70)
+                        return m.cour_vers_ballon +SoccerAction(None,t.petit_tire(p))
+                
+                    if (s.id_team == 2):
+                        p=Vector2D(30,70)
+                        return m.cour_vers_ballon +SoccerAction(None,t.petit_tire(p))
+                else :   
+                    return t.tire_vers(s.posattaquant,3.5)
+            elif s.my_positionx > settings.GAME_WIDTH - 25:
                 return t.tire_vers_but
             else:
                 if (s.id_team == 1):
@@ -166,10 +165,20 @@ class ailierb(Strategy):
         if s.ball_positiony>30 and s.ball_positionx<110 :
             return m.deplaceVers(s.ball_positionx+30, 20)
         if s.ball_positiony<=20 :
-            if s.my_position.distance(s.oppleplusproche)<20:
-                return t.tire_vers(s.equipier_le_plus_proche,3.5)
-            elif s.my_positionx > settings.GAME_WIDTH - 15:
-                return t.tire_vers(s.equipier_le_plus_proche, 4)
+            if s.my_position.distance(s.oppleplusproche)<10:
+                if s.posattaquant.distance(s.oppleplusproche)<s.my_position.distance(s.oppleplusproche):
+                    if (s.id_team == 1):
+                        p=Vector2D(120,20)
+                        return m.cour_vers_ballon +SoccerAction(None,t.petit_tire(p))
+                
+                    if (s.id_team == 2):
+                        p=Vector2D(30,20)
+                        return m.cour_vers_ballon +SoccerAction(None,t.petit_tire(p))
+                else :   
+                    return t.tire_vers(s.posattaquant,3.5)
+                
+            elif s.my_positionx > settings.GAME_WIDTH - 25:
+                return t.tire_vers_but
             
             else:
                 if (s.id_team == 1):
@@ -195,7 +204,11 @@ class Attaquant4v4(Strategy):
             return m.deplaceVers(s.ball_positionx+15, 45)
         else :
             if (s.id_team == 1):
-                if s.my_position.distance(s.oppleplusproche)<15:
+                if s.ball_positionx < settings.GAME_WIDTH/2.:
+                     if s.my_position.distance(s.oppleplusproche)<15:
+                         v=Vector2D(s.my_positionx+30,20)
+                         return t.tire_vers(v,3)
+                elif s.my_position.distance(s.oppleplusproche)<15:
                     return t.tire_vers(s.equipier_le_plus_proche, 3.5)
                 elif s.ball_positionx<110 :
                     p=Vector2D(110,45)
@@ -218,8 +231,6 @@ class Attaquant4v4(Strategy):
         
         
         
-        
-        
     
 class Attaquant(Strategy):
     def __init__(self):
@@ -227,8 +238,19 @@ class Attaquant(Strategy):
 
     def compute_strategy(self, state, id_team, id_player):
         s = tools.MyState(state,id_team,id_player)
+        m = action.Move(s)
+        t = action.Shoot(s)
+
+        d1 =s.my_position.distance(s.posaillier1)#haut
+        d2 =s.my_position.distance(s.posaillier2)#bas
         if s.id_team == 1 :
-            if (s.my_positionx < settings.GAME_WIDTH/4.) : 
+            if s.my_position.distance(s.oppleplusproche)<settings.BALL_RADIUS+settings.PLAYER_RADIUS:
+                if d1<d2 :
+                    return t.tire_vers(s.posaillier1,4)
+                else :
+                    return t.tire_vers(s.posaillier2,4)
+                    
+            elif (s.my_positionx < settings.GAME_WIDTH/4.) : 
                 return SoccerAction(Vector2D(settings.GAME_WIDTH*(s.defe[0]), (s.ball_position_futur.y + s.goal.y)/2 )-s.my_position, s.goal - s.my_position)
             else :
                 return s.stratatt
