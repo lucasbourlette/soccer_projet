@@ -51,6 +51,7 @@ class MyState(object):
         for (id_team, id_player) in self.state.players :
             if (id_team == self.id_team) and (id_player != self.id_player): 
                 return self.state.player_state(id_team, id_player).position
+            
 #====================================================================================================================================
 #        Position
     @property

@@ -47,7 +47,7 @@ class Shoot(object):
     def petit_tire(self,pos):
         
         v1= pos-self.MyState.my_position
-        return v1.normalize()*1.5     
+        return v1.normalize()*1.2     
         
 
     
