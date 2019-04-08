@@ -9,6 +9,16 @@ Created on Mon Apr  8 17:58:27 2019
 from soccersimulator import Strategy, SoccerAction, Vector2D, SoccerTeam
 from soccersimulator import VolleySimulation, volley_show_simu
 
+
+
+
+
+
+
+########################################################################################
+#                                       INACHEVE
+
+
 class firstrat(Strategy):
     def __init__(self):
         Strategy.__init__(self,"1V1")
