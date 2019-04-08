@@ -18,18 +18,22 @@ class Defense(Strategy):
         j=state.player_state(1,id_player).position
         ja=state.player_state(2,id_player).position
         b=state.ball.position
-        
-        if(b.distance(j)<30):
-            p1=Vector2D(135,45)
-            return SoccerAction(acceleration=b-j,shoot=p1-b)
-        else:
-            if(id_team==1):
-                p1=Vector2D(45,b.y)
+        bf=b+4*state.ball.vitesse
+        if(id_team==1):
+            if(b.distance(j)<35):
+                p1=Vector2D(135,45)
+                return SoccerAction(acceleration=b-j,shoot=p1-b)
+            else:
+                p1=Vector2D(55,bf.y)
                 return SoccerAction(p1-j)
-            
-            if(id_team==2):
-                p1=Vector2D(135,b.y)
+        else :
+            if(b.distance(ja)<35):
+                p1=Vector2D(45,45)
+                return SoccerAction(acceleration=b-ja,shoot=p1-b)
+            else:
+                p1=Vector2D(125,bf.y)
                 return SoccerAction(p1-ja)
+            
             
 class Attaque(Strategy):
     def __init__(self):
@@ -72,8 +76,8 @@ team1 = SoccerTeam(name="Team 1")
 team2 = SoccerTeam(name="Team 2")
 
 # Add players
-team1.add("Player 1", Defense())  # Random strategy
-team2.add("Player 2", Attaque())   # Random strategy
+team2.add("Player 1", Defense())  # Random strategy
+team1.add("Player 2", Attaque())   # Random strategy
 
 # Create a match
 simu = VolleySimulation(team1, team2)
