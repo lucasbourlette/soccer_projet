@@ -154,24 +154,7 @@ class MyState(object):
         vecteurballbut=Vector2D(((2-self.id_team)*settings.GAME_WIDTH)-self.ball_positionx,settings.GAME_HEIGHT/2.-self.ball_positiony)
         vecteurballjoueur=Vector2D(self.my_positionx-self.ball_positionx,self.my_positiony-self.ball_positiony)
         return SoccerAction(vecteurballbut - vecteurballjoueur)
-    
-            
 
-    @property
-    def att(self):
-        if self.id_team == 1 :
-            (posattx,nextpos) = (self.my_positionx < settings.GAME_WIDTH*(1/2), settings.GAME_WIDTH*(3/5))
-        else : 
-            (posattx,nextpos) = (self.my_positionx > settings.GAME_WIDTH*(1/2), settings.GAME_WIDTH*(2/5))
-        return (posattx,nextpos)
-    
-    @property
-    def defe(self):
-        if self.id_team == 1 :
-            (posdef,condition) = (1/4, self.ball_position_futur.x > settings.GAME_WIDTH*(1/3))
-        else : 
-            (posdef, condition) = (3/4, self.ball_position_futur.x < settings.GAME_WIDTH*(2/3))
-        return (posdef,condition)
     
     @property
     def posaillier1(self):   
@@ -190,21 +173,4 @@ class MyState(object):
         for (id_team, id_player) in self.state.players :
             if (id_team == self.id_team) and (id_player != self.id_player) and (id_player == 0): 
                 return self.state.player_state(id_team, id_player).position 
-    @property
-    def stratatt(self):
-        if self.att[0] :
-            #if self.my_positiony < settings.GAME_HEIGHT/2 :
-                if self.my_position.distance(self.ball_position)<settings.PLAYER_RADIUS + settings.BALL_RADIUS :
-                    return SoccerAction(shoot=Vector2D(self.att[1], 0)-self.my_position)
-                else :
-                    return SoccerAction(acceleration=self.ball_position_futur-self.my_position) 
-            #else : 
-               # if self.my_position.distance(self.ball_position)<settings.PLAYER_RADIUS + settings.BALL_RADIUS :
-                   # return SoccerAction(shoot=Vector2D(self.att[1], settings.GAME_HEIGHT)-self.my_position)
-               # else :
-                   # return SoccerAction(acceleration=self.ball_position_futur-self.my_position)
-        else : 
-            if self.my_position.distance(self.ball_position)<settings.PLAYER_RADIUS + settings.BALL_RADIUS :
-                return SoccerAction(shoot=self.goal-self.my_position)
-            else :
-                return SoccerAction(acceleration=self.ball_position_futur-self.my_position)
+    
