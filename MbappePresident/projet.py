@@ -137,7 +137,7 @@ class ailierh(Strategy):
                 else :   
                     return t.tire_vers(s.posattaquant,3.5)
             elif s.my_positionx > settings.GAME_WIDTH - 25:
-                return t.tire_vers_but
+                return t.tire_vers(s.posattaquant, 5)
             else:
                 if (s.id_team == 1):
                     p=Vector2D(120,70)
@@ -178,7 +178,7 @@ class ailierb(Strategy):
                     return t.tire_vers(s.posattaquant,3.5)
                 
             elif s.my_positionx > settings.GAME_WIDTH - 25:
-                return t.tire_vers_but
+                return t.tire_vers(s.posattaquant, 5)
             
             else:
                 if (s.id_team == 1):
@@ -220,9 +220,9 @@ class Attaquant4v4(Strategy):
                 else :
                     return t.tire_vers_but
             if (s.id_team == 2):
-                if s.my_position.distance(s.oppleplusproche)<20 and s.my_position.distance(s.goal)>40:
-                    return t.tire_vers(s.equipier_le_plus_proche,2)
-                elif s.ball_positionx>40:
+#                if s.my_position.distance(s.oppleplusproche)<20 and s.my_position.distance(s.goal)>40:
+#                    return t.tire_vers(s.equipier_le_plus_proche,2)
+                if s.ball_positionx>40:
                     p=Vector2D(40,45)
                     return m.cour_vers_ballon +SoccerAction(None,t.petit_tire(p))
                 else :
@@ -232,38 +232,3 @@ class Attaquant4v4(Strategy):
         
         
     
-class Attaquant(Strategy):
-    def __init__(self):
-        Strategy.__init__(self, "Attaquant")
-
-    def compute_strategy(self, state, id_team, id_player):
-        s = tools.MyState(state,id_team,id_player)
-        m = action.Move(s)
-        t = action.Shoot(s)
-
-        d1 =s.my_position.distance(s.posaillier1)#haut
-        d2 =s.my_position.distance(s.posaillier2)#bas
-        if s.id_team == 1 :
-            if s.my_position.distance(s.oppleplusproche)<settings.BALL_RADIUS+settings.PLAYER_RADIUS:
-                if d1<d2 :
-                    return t.tire_vers(s.posaillier1,4)
-                else :
-                    return t.tire_vers(s.posaillier2,4)
-                    
-            elif (s.my_positionx < settings.GAME_WIDTH/4.) : 
-                return SoccerAction(Vector2D(settings.GAME_WIDTH*(s.defe[0]), (s.ball_position_futur.y + s.goal.y)/2 )-s.my_position, s.goal - s.my_position)
-            else :
-                return s.stratatt
-        if s.id_team == 2 :
-            if (s.my_positionx > (3*settings.GAME_WIDTH)/4.) : 
-                return SoccerAction(Vector2D(settings.GAME_WIDTH*(s.defe[0]), (s.ball_position_futur.y + s.goal.y)/2 )-s.my_position, s.goal - s.my_position)
-            else :
-                return s.stratatt
-        
-#class AttaqueStrategy(Strategy):
-#    def __init__(self):
-#        Strategy.__init__(self, "Attaque")
-#
-#    def compute_strategy(self, state, id_team, id_player):
-#         s = tools.MyState(state,id_team,id_player)
-#         return s.passe
